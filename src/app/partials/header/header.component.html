@@ -1,15 +1,20 @@
-<nav class="fixed top-0 w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
+<nav class="sticky top-0 w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
+
   <div class="max-w-7xl mx-auto px-4 sm:px-6">
     <div class="flex justify-between items-center py-4">
-      <div class="text-xl font-semibold">Salon Elite</div>
+      <a routerLink="/home" class="text-xl font-semibold">Salon Elite</a>
       <div class="hidden sm:flex space-x-8 items-center">
-        <a routerLink="/home" class="hover:text-gray-600 transition-colors">Accueil</a>
         <a href="#" class="hover:text-gray-600 transition-colors">Réservations</a>
         <a href="#" class="hover:text-gray-600 transition-colors">Prestations</a>
         <a href="#" class="hover:text-gray-600 transition-colors">Tarifs</a>
+
         <button class="flex items-center  bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors">
           <i class="bi bi-person"></i>
-          <span>Connexion</span>
+        @if(!currentUser){
+          <a routerLink="/login">Connexion</a>
+        } @else {
+          <a (click)="logout()">Deconnexion</a>
+        }
         </button>
       </div>
     </div>
