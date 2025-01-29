@@ -5,11 +5,11 @@ import {AuthentificationService} from "../../Services/auth/authentification.serv
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   imports: [
     RouterLink
   ],
   templateUrl: './header.component.html',
+  standalone: true,
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
