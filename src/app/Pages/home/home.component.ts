@@ -6,17 +6,17 @@ import {CommonModule} from "@angular/common";
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
+  imports: [CommonModule],
   standalone: true,
-  imports: [ CommonModule ],
   animations: [
     //Animations des images de droite à gauche
     trigger('fadeSlide', [
       transition(':enter', [
-        style({ transform: 'translateX(100%)'}),
-        animate('1s ease-in-out', style({ transform: 'translateX(0)'}))
+        style({transform: 'translateX(100%)'}),
+        animate('1s ease-in-out', style({transform: 'translateX(0)'}))
       ]),
       transition(':leave', [
-        animate('1s ease-in-out', style({ transform: 'translateX(-100%)'}))
+        animate('1s ease-in-out', style({transform: 'translateX(-100%)'}))
       ])
     ]),
     //Animation du texte de bas en haut
