@@ -46,4 +46,8 @@ export class AuthentificationService {
     this.router.navigate(['/login']); // Rediriger vers la page de connexion
   }
 
+  registration(user: User){
+    return this.http.post<any>('http://localhost:8000/register', user);
+  }
+
 }

@@ -1,13 +1,13 @@
 import {Component, inject, ViewChild} from '@angular/core';
 import {FormsModule, NgForm} from "@angular/forms";
 import {AuthentificationService} from "../../Services/auth/authentification.service";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {AlertModule} from "@coreui/angular";
 
 @Component({
   selector: 'app-authentification',
   standalone: true,
-  imports: [FormsModule, AlertModule],
+  imports: [FormsModule, AlertModule, RouterLink],
   templateUrl: './authentification.component.html',
   styleUrl: './authentification.component.css'
 })

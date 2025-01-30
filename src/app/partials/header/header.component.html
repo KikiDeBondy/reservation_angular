@@ -1,6 +1,7 @@
-<nav class="sticky top-0 w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
+<nav [class.absolute]="isHomePage" [class.sticky]="!isHomePage "
+     class="top-0 w-full bg-transparent backdrop-blur-sm shadow-sm z-50">
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
     <div class="flex justify-between items-center py-4">
       <a routerLink="/home" class="text-xl font-semibold">Salon Elite</a>
       <div class="hidden sm:flex space-x-8 items-center">
