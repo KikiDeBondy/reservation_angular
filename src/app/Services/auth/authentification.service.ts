@@ -33,6 +33,7 @@ export class AuthentificationService {
       // En cas de succès, traiter la réponse et mettre à jour l'état de l'utilisateur
       tap((response: User) => {
         sessionStorage.setItem('user', JSON.stringify(response)); // Stocker l'utilisateur dans sessionStorage
+        // res.cookie("SESSIONID", JSON.stringify(response.token), {httpOnly: true, secure: true}); // Stocker le token dans un cookie sécurisé
         this.currentUserSubject.next(response); // Mettre à jour le BehaviorSubject avec l'utilisateur connecté
       })
     );
