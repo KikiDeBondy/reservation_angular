@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import {BehaviorSubject, tap} from "rxjs";
 import { User } from "../../models/User";
 import { Router } from '@angular/router';
+import {Login} from "../../models/Login";
 
 @Injectable({
   providedIn: 'root'
@@ -25,11 +26,9 @@ export class AuthentificationService {
   }
 
   // Méthode d'authentification avec email et mot de passe
-  authentification(email: string, password: string) {
-    let data = { username: email, password: password };
-
+  authentification(login: Login) {
     // Appel API pour se connecter
-    return this.http.post<any>('http://localhost:8000/api/login', data).pipe(
+    return this.http.post<any>('http://localhost:8000/api/login', login).pipe(
       // En cas de succès, traiter la réponse et mettre à jour l'état de l'utilisateur
       tap((response: User) => {
         sessionStorage.setItem('user', JSON.stringify(response)); // Stocker l'utilisateur dans sessionStorage

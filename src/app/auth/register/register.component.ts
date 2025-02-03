@@ -1,8 +1,9 @@
 import {Component, inject, ViewChild} from '@angular/core';
-import {FormsModule, NgForm, ReactiveFormsModule} from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {AuthentificationService} from "../../Services/auth/authentification.service";
 import {AlertComponent} from "@coreui/angular";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-register',
@@ -10,7 +11,8 @@ import {AlertComponent} from "@coreui/angular";
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
-    AlertComponent
+    AlertComponent,
+    CommonModule
   ],
   templateUrl: './register.component.html',
   standalone: true,
@@ -18,20 +20,24 @@ import {AlertComponent} from "@coreui/angular";
 })
 export class RegisterComponent {
 
-  errorMessage: string | null = null;
-
   private authService = inject(AuthentificationService);
   private router = inject(Router);
-  @ViewChild('registerForm') registerForm!: NgForm;
+  formRegister: FormGroup= new FormGroup({
+    name: new FormControl('', Validators.required),
+    forename: new FormControl('', Validators.required),
+    number: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
+
+  });
 
   onSubmit() {
-    console.log(this.registerForm.value);
-    this.authService.registration(this.registerForm.value).subscribe({
+    this.authService.registration(this.formRegister.value).subscribe({
       next: () => {
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        this.errorMessage = err.error.error
+        console.log(err)
       }
     })
   }

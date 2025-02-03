@@ -1,42 +1,55 @@
-@if(errorMessage){
-  <c-alert color="danger" class="alert-position">{{errorMessage}}</c-alert>
-}
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 p-4">
   <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
     <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Inscription chez <span class="text-black">Salon Elite</span></h2>
 
-    <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="formRegister" (ngSubmit)="onSubmit()">
       <div class="mb-4">
         <label for="name" class="block text-gray-700 font-medium mb-2">Nom</label>
-        <input type="text" id="name" name="name" placeholder="Votre nom"
-               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none" ngModel required>
+        <input type="text" id="name" placeholder="Doe" formControlName="name"
+               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none">
+        @if (formRegister.get('name')?.touched && formRegister.get('name')?.invalid){
+          <span class="text-red-500 text-sm mt-1"> Nom requis.</span>
+        }
       </div>
 
       <div class="mb-4">
         <label for="forename" class="block text-gray-700 font-medium mb-2">Prénom</label>
-        <input type="text" id="forename" name="forename" placeholder="Votre prénom"
-               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none" ngModel required>
+        <input type="text" id="forename" placeholder="John" formControlName="forename"
+               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none" >
+        <div *ngIf="formRegister.get('forename')?.touched && formRegister.get('forename')?.invalid" class="text-red-500 text-sm mt-1">
+          Prénom requis.
+        </div>
       </div>
 
       <div class="mb-4">
         <label for="number" class="block text-gray-700 font-medium mb-2">Numéro de téléphone</label>
-        <input type="tel" id="number" name="number" placeholder="Votre numéro"
-               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none" ngModel required>
+        <input type="tel" id="number" placeholder="06********" formControlName="number"
+               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none" >
+        <div *ngIf="formRegister.get('number')?.touched && formRegister.get('number')?.invalid" class="text-red-500 text-sm mt-1">
+          Numéro de téléphone requis (10 chiffres).
+        </div>
       </div>
 
       <div class="mb-4">
         <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
-        <input type="email" id="email" name="email" placeholder="Votre email"
-               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none" ngModel required>
+        <input type="email" id="email" placeholder="johndoe@xxx.xx" formControlName="email"
+               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none" >
+        <div *ngIf="formRegister.get('email')?.touched && formRegister.get('email')?.invalid" class="text-red-500 text-sm mt-1">
+          Email invalide ou requis.
+        </div>
       </div>
 
       <div class="mb-6">
         <label for="password" class="block text-gray-700 font-medium mb-2">Mot de passe</label>
-        <input type="password" id="password" name="password" placeholder="Votre mot de passe"
-               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none" ngModel required>
+        <input type="password" id="password" placeholder="********" formControlName="password"
+               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none" >
+        <div *ngIf="formRegister.get('password')?.touched && formRegister.get('password')?.invalid" class="text-red-500 text-sm mt-1">
+          Mot de passe requis.
+        </div>
       </div>
 
-      <button type="submit" [disabled]="!registerForm.valid"
+      <button type="submit"
+              [disabled]="formRegister.invalid"
               class="w-full bg-black text-white py-3 rounded-md font-medium text-lg hover:bg-gray-800 transition">S'inscrire</button>
     </form>
 

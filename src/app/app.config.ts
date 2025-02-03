@@ -10,6 +10,6 @@ export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), provideAnimationsAsync(),
     provideHttpClient(
       withFetch(),
-      withInterceptors([JwtInterceptor])
+      withInterceptors([JwtInterceptor]),
       )]
 };

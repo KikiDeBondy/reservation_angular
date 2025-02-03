@@ -1,23 +1,24 @@
-@if(errorMessage){
-  <c-alert color="danger" class="alert-position">{{errorMessage}}</c-alert>
-}
-
-
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 p-4">
   <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
     <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Bienvenue chez <span class="text-black">Salon Elite</span></h2>
-    <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
       <div class="mb-4">
         <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
-        <input type="text" id="email" name="username" placeholder="johndoe@gmail.com"
-               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none" ngModel required>
+        <input type="text" id="email" placeholder="johndoe@gmail.com" formControlName="username"
+               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none">
+        @if (loginForm.get('username')?.touched && loginForm.get('username')?.invalid){
+          <span class="text-red-500 text-sm mt-1"> Email invalide ou requis.</span>
+        }
       </div>
 
       <div class="mb-6">
         <label for="password" class="block text-gray-700 font-medium mb-2">Mot de passe</label>
-        <input type="password" name="password" id="password" placeholder="******"
-               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none" ngModel required>
+        <input type="password"  id="password" placeholder="******" formControlName="password"
+               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:outline-none">
+        @if(loginForm.get('password')?.touched && loginForm.get('password')?.invalid){
+          <span class="text-red-500 text-sm mt-1"> Mot de passe requis.</span>
+        }
       </div>
 
       <button type="submit"  [disabled]="!loginForm.valid"

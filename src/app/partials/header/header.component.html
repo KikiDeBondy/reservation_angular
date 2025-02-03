@@ -7,13 +7,13 @@
       <div class="hidden sm:flex space-x-8 items-center">
         <a href="#" class="hover:text-gray-600 transition-colors">Réservations</a>
         <a href="#" class="hover:text-gray-600 transition-colors">Prestations</a>
-        <a href="#" class="hover:text-gray-600 transition-colors">Tarifs</a>
 
         <button class="flex items-center  bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors">
           <i class="bi bi-person"></i>
         @if(!currentUser){
           <a routerLink="/login">Connexion</a>
         } @else {
+        <a routerLink="account" class="hover:text-gray-600 transition-colors">Compte</a>
           <a (click)="logout()">Deconnexion</a>
         }
         </button>
