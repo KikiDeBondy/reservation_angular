@@ -2,13 +2,13 @@ import {Component} from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {User} from "../../models/User";
 import {AuthentificationService} from "../../Services/auth/authentification.service";
-import {NgClass} from "@angular/common";
+import {CommonModule, NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-header',
   imports: [
     RouterLink,
-    NgClass
+    CommonModule,
   ],
   templateUrl: './header.component.html',
   standalone: true,
