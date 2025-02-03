@@ -2,7 +2,7 @@ import {Component, inject} from '@angular/core';
 import {UserService} from "../../Services/user.service";
 import {User} from "../../models/User";
 import {CommonModule, DatePipe} from "@angular/common";
-import {HttpClient} from "@angular/common/http";
+import {ReservationService} from "../../Services/reservation.service";
 
 @Component({
   selector: 'app-account',
@@ -16,10 +16,10 @@ import {HttpClient} from "@angular/common/http";
 export class AccountComponent {
 
   private userService = inject(UserService);
-  private http = inject(HttpClient);
+  private reservationService = inject(ReservationService);
 
   user!: any;
-
+  reservations: any;
   // Fausse donnée pour les réservations passées
   pastReservations = [
     { id: 1, date: '2024-12-15T14:00:00Z', service: 'Coupe de cheveux', status: 'completed' },
@@ -32,7 +32,8 @@ export class AccountComponent {
     { id: 4, date: '2025-03-05T09:00:00Z', service: 'Coiffure pour mariage', status: 'upcoming' }
   ];
   ngOnInit() {
-    this.showUser(1); // Remplacez 1 par l'ID de l'utilisateur que vous souhaitez afficher
+    this.showUser(1);
+    this.showReservationByUser(1)
   }
 
   showUser(id: number){
@@ -45,7 +46,20 @@ export class AccountComponent {
         console.error(err);
       }
     });
-
   }
 
+  showReservationByUser(id: number){
+    this.reservationService.showReservationByUser(id).subscribe({
+      next: (res) => {
+        this.reservations = res;
+        console.log(this.reservations);
+        // this.reservations = this.reservations.reservations;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+  protected readonly Date = Date;
 }

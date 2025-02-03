@@ -6,36 +6,25 @@
       <p><span class="font-semibold">Nom :</span> {{ user?.name }}</p>
       <p><span class="font-semibold">Prénom :</span> {{ user?.forename }}</p>
       <p><span class="font-semibold">Email :</span> {{ user?.email }}</p>
-      <p><span class="font-semibold">Rôles :</span> {{ user?.roles?.join(', ') }}</p>
+      <p><span class="font-semibold">Rôles :</span> {{ user?.roles.join(', ') }}</p>
     </div>
   </div>
 
-
-  <!-- Réservations à venir -->
-  <div class="bg-white shadow-md rounded-lg p-6 mb-8">
-    <h3 class="text-xl font-semibold text-gray-800 mb-4">Réservations à Venir</h3>
-    <div *ngIf="upcomingReservations.length > 0; else noUpcomingReservations">
-      <ul class="space-y-4">
-        <li *ngFor="let res of upcomingReservations" class="border-b pb-4">
-          <p class="text-lg font-semibold text-gray-700">{{ res.service }}</p>
-          <p class="text-sm text-gray-500">Date : {{ res.date | date:'dd/MM/yyyy' }}</p>
-          <p class="text-sm text-gray-500">Statut : {{ res.status === 'upcoming' ? 'À venir' : 'Annulée' }}</p>
-        </li>
-      </ul>
-    </div>
-    <ng-template #noUpcomingReservations>
-      <p class="text-gray-500">Aucune réservation à venir pour le moment.</p>
-    </ng-template>
-  </div>
   <!-- Réservations passées -->
   <div class="bg-white shadow-md rounded-lg p-6 mb-8">
     <h3 class="text-xl font-semibold text-gray-800 mb-4">Historique des Réservations</h3>
     <div *ngIf="pastReservations.length > 0; else noPastReservations">
       <ul class="space-y-4">
-        <li *ngFor="let res of pastReservations" class="border-b pb-4">
-          <p class="text-lg font-semibold text-gray-700">{{ res.service }}</p>
-          <p class="text-sm text-gray-500">Date : {{ res.date | date:'dd/MM/yyyy' }}</p>
-          <p class="text-sm text-gray-500">Statut : {{ res.status === 'completed' ? 'Terminée' : 'Annulée' }}</p>
+        <li *ngFor="let res of reservations" class="border-b pb-4">
+          <p class="text-lg font-semibold text-gray-700">{{ res.title }}</p>
+          <p class="text-sm text-gray-500">Coiffeur : {{ res.barber.name }}</p>
+          <p class="text-sm text-gray-500">Date : {{ res.start | date:'dd/MM/yyyy HH:mm':'UTC' }}</p>
+          <p class="text-sm text-gray-500">
+            Durée :
+            {{
+              (Date.parse(res.end) - Date.parse(res.start)) / (1000 * 60)
+            }} minutes
+          </p>          <p class="text-sm text-gray-500">Statut : Terminée</p>
         </li>
       </ul>
     </div>
@@ -43,4 +32,23 @@
       <p class="text-gray-500">Aucune réservation passée pour le moment.</p>
     </ng-template>
   </div>
+
+<!--  &lt;!&ndash; Réservations à venir &ndash;&gt;-->
+<!--  <div class="bg-white shadow-md rounded-lg p-6 mb-8">-->
+<!--    <h3 class="text-xl font-semibold text-gray-800 mb-4">Réservations à Venir</h3>-->
+<!--    <div *ngIf="upcomingReservations.length > 0; else noUpcomingReservations">-->
+<!--      <ul class="space-y-4">-->
+<!--        <li *ngFor="let res of upcomingReservations" class="border-b pb-4">-->
+<!--          <p class="text-lg font-semibold text-gray-700">{{ reservations.title }}</p>-->
+<!--          <p class="text-sm text-gray-500">Coiffeur : {{ reservations.barber.name }}</p>-->
+<!--          <p class="text-sm text-gray-500">Date : {{ reservations.start | date:'dd/MM/yyyy HH:mm' }}</p>-->
+<!--&lt;!&ndash;          <p class="text-sm text-gray-500">Durée : {{ (new Date(reservations.end).getTime() - new Date(reservations.start).getTime()) / (1000 * 60) }} minutes</p>&ndash;&gt;-->
+<!--          <p class="text-sm text-gray-500">Statut : À venir</p>-->
+<!--        </li>-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--    <ng-template #noUpcomingReservations>-->
+<!--      <p class="text-gray-500">Aucune réservation à venir pour le moment.</p>-->
+<!--    </ng-template>-->
+<!--  </div>-->
 </div>
