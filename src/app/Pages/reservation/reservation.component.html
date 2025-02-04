@@ -1,0 +1,62 @@
+<div class="flex justify-center w-full">
+  <div class="card p-4 max-w-[95%]">
+    <div class="grid grid-cols-7 gap-x-4 gap-y-2">
+      @for (day of days;track $index) {
+
+        <div class="text-center w-full">
+          <div class="card-header font-bold mb-2 w-full text-center"
+               style="padding: 0 !important;">
+            {{ day.date | date: 'EEE dd/MM' :  'fr' }}
+          </div>
+          @for (hour of day.hours;track $index) {
+            @if (!hour.isBooked) {
+              <div class="card-body border-b text-sm w-full"
+                   (click)="bookSlot(day.date, hour)">
+                <p-button severity="primary" class="w-full h-8 py-0" label="{{hour.time}}"></p-button>
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<div class="max-w-3xl mx-auto py-6">
+  <!-- Navigation de la semaine -->
+  <div class="flex justify-between items-center mb-4">
+    <button
+      (click)="previousWeek()"
+      [disabled]="isPreviousDisabled"
+      class="bg-blue-500 text-white px-4 py-2 rounded-lg disabled:bg-gray-300"
+    >
+      Précédent
+    </button>
+    <h2 class="text-xl font-semibold">Semaine {{ currentWeekNumber }}</h2>
+    <button
+      (click)="nextWeek()"
+      class="bg-blue-500 text-white px-4 py-2 rounded-lg"
+    >
+      Suivant
+    </button>
+  </div>
+
+
+  <!-- Tableau des horaires -->
+  <div class="grid grid-cols-8 gap-2">
+    <div *ngFor="let day of days" class="text-center border p-2">
+      <div class="font-bold mb-2">{{ day.date | date: 'dd/MM' }}</div>
+
+      <!-- Affichage des horaires pour chaque jour -->
+      <div *ngFor="let hour of day.hours"
+           class="border-b text-sm cursor-pointer"
+           [ngClass]="{ 'bg-gray-300': hour.isBooked, 'hover:bg-blue-200': !hour.isBooked }"
+           (click)="bookSlot(day.date, hour)"
+      >
+        <p-button label="{{hour.time}}">
+          <!--          {{ hour.time }}-->
+        </p-button>
+      </div>
+    </div>
+  </div>
+</div>

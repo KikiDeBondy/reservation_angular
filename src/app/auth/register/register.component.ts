@@ -1,8 +1,7 @@
-import {Component, inject, ViewChild} from '@angular/core';
-import {FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Component, inject} from '@angular/core';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {AuthentificationService} from "../../Services/auth/authentification.service";
-import {AlertComponent} from "@coreui/angular";
 import {CommonModule} from "@angular/common";
 
 @Component({
@@ -11,7 +10,6 @@ import {CommonModule} from "@angular/common";
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
-    AlertComponent,
     CommonModule
   ],
   templateUrl: './register.component.html',
