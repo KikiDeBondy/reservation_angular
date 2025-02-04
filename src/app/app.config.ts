@@ -5,11 +5,18 @@ import { routes } from './app.routes';
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 import {provideHttpClient, withFetch, withInterceptors} from "@angular/common/http";
 import {JwtInterceptor} from "./core/interceptor/JwtInterceptor";
+import {providePrimeNG} from "primeng/config";
+import Aura from '@primeng/themes/aura'
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), provideAnimationsAsync(),
     provideHttpClient(
       withFetch(),
       withInterceptors([JwtInterceptor]),
-      )]
+      ),
+    providePrimeNG({
+      theme: {
+        preset: Aura
+      }
+    })]
 };
