@@ -20,7 +20,7 @@ export class AuthentificationService {
   constructor() {}
 
   // Fonction pour récupérer l'utilisateur depuis le sessionStorage (si existant)
-  private getUserFromStorage(): User | null {
+  public getUserFromStorage(): User | null {
     const user = sessionStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }

@@ -6,6 +6,10 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {Button, ButtonModule} from "primeng/button";
 import {ToastModule} from "primeng/toast";
 import {ConfirmationService, MessageService} from "primeng/api";
+import Swal from "sweetalert2";
+import {User} from "../../models/User";
+import {AuthentificationService} from "../../Services/auth/authentification.service";
+import {Reservation} from "../../models/Reservation";
 @Component({
   selector: 'app-reservation',
   imports: [
@@ -19,23 +23,35 @@ import {ConfirmationService, MessageService} from "primeng/api";
   styleUrl: './reservation.component.css'
 })
 export class ReservationComponent {
-
+  private today = new Date();
+  private auth = inject(AuthentificationService);
   private reservationService = inject(ReservationService);
-  test = new Date()
+  private currentUser!: User | null;
   currentWeekNumber = 1;  // Numéro de la semaine actuelle
   days: any;
-  private events1: any;
-
-  ngOnInit(){
-    this.events1 = [  // Liste des événements réservés
-      { title: 'Meeting', start: new Date('2025-02-05T15:00:00'), end: new Date('2025-02-05T15:30:00') },
-      { title: 'Workshop', start: new Date('2025-02-05T10:00:00'), end: new Date('2025-02-05T10:30:00') },
-      { title: 'Lunch', start: new Date('2025-02-05T12:30:00'), end: new Date('2025-02-05T13:00:00') }
-      // Ajoute plus d'événements ici
-    ];
-    this.days = this.generateWeek(new Date());  // Génère la semaine actuelle
-  }
+  private currentReservation!: Reservation[];
   isPreviousDisabled = true;  // Le bouton précédent est désactivé par défaut
+
+  async ngOnInit() {
+    this.currentUser = this.auth.getUserFromStorage();
+    await this.getReservations(this.today);
+    this.days = this.generateWeek(this.today);  // Génère la semaine actuelle
+  }
+  async getReservations(date : Date){
+    const formatedDate = date.toLocaleDateString().replaceAll('/', '-');
+    return new Promise((resolve, reject) => {
+      this.reservationService.weeklyReservation(formatedDate).subscribe({
+        next: (data) => {
+          this.currentReservation = data;
+          resolve(data);
+        },
+        error: (error) => {
+          console.error(error);
+          reject(error);
+        }
+      });
+    });
+  }
 
   // Fonction qui génère les jours de la semaine avec les horaires
   generateWeek(startDate: Date) {
@@ -62,9 +78,7 @@ export class ReservationComponent {
 
     // Boucle pour chaque créneau horaire de 30 minutes
     while (hour <= 20) { // Jusqu'à 20h
-      const start = new Date(day);
-      start.setHours(hour, minute, 0, 0); // Définir l'heure et les minutes du créneau
-
+      const start = new Date(Date.UTC(day.getUTCFullYear(), day.getUTCMonth(), day.getUTCDate(), hour, minute)); // Créer en UTC, pour éviter les problèmes de fuseau horaire
       const end = new Date(start);
       end.setMinutes(start.getMinutes() + 30); // Le créneau dure 30 minutes
 
@@ -86,16 +100,22 @@ export class ReservationComponent {
   }
 
 
+
   // Fonction qui vérifie si un créneau est réservé
   isBooked(start: Date, end: Date) {
-    if (!this.events1 || !Array.isArray(this.events1)) {
+    if (!this.currentReservation || !Array.isArray(this.currentReservation)) {
       return false;
     }
 
-    return this.events1.some(event =>
-      start.toString() == event.start.toString()
-    );
+    return this.currentReservation.some(event => {
+      const eventStart = new Date(event.start);
+      const eventStartUTC = new Date(Date.UTC(eventStart.getUTCFullYear(), eventStart.getUTCMonth(), eventStart.getUTCDate(), eventStart.getUTCHours(), eventStart.getUTCMinutes()));
+
+      // Comparer start et eventStart en UTC
+      return start.getTime() === eventStartUTC.getTime(); // Comparer les timestamps
+    });
   }
+
 
   // Fonction pour passer à la semaine suivante
   nextWeek() {
@@ -134,26 +154,43 @@ export class ReservationComponent {
       // La fin de l'événement est 30 minutes après le début
       const endDate = new Date(startDate);
       endDate.setMinutes(startDate.getMinutes() + 30); // Ajouter 30 minutes
-      console.log(startDate.toLocaleString(), endDate.toLocaleString());
-      // Exemple : Ajouter l'événement dans la liste des événements réservés
-      // const newEvent : Reservation = {
-      //   title: 'New Event',
-      //   start: startDate.toLocaleString(),
-      //   end: endDate.toLocaleString(),
-      //   client_id: 1,
-      //   barber_id: 2
-      // };
-      // this.reservationService.addReservation(newEvent).subscribe({
-      //   next: (data) => {
-      //     console.log(data);
-      //   },
-      //   error: (error) => {
-      //     console.error(error);
-      //   }
-      // })
-      // console.log(newEvent);
-
-      // Marquer le créneau comme réservé
+      Swal.fire({
+        title: startDate.toLocaleString(),
+        text: "Vous êtes sur le point de réserver ce créneau horaire. Voulez-vous continuer ?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#41a60f",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Réserver"
+      }).then((result) => {
+        if (result.isConfirmed && this.currentUser) {
+            const newEvent: Reservation = {
+              title: this.currentUser.name + ' ' + this.currentUser.forename,
+              start: startDate.toLocaleString(),
+              end: endDate.toLocaleString(),
+              client_id: this.currentUser?.id || 0,
+              barber_id: 6
+            }
+          this.reservationService.addReservation(newEvent).subscribe({
+            next: (event) => {
+              this.currentReservation = this.currentReservation.concat(event);
+              Swal.fire({
+                title: "Réservé !",
+                text: "Vous avez bien réservé ce créneau horaire. Vous pouvez consulter vos réservations dans votre espace client.",
+                icon: "success"
+              });
+            },
+            error: (error) => {
+              console.error(error);
+              Swal.fire({
+                title: "Erreur !",
+                text: "Une erreur s'est produite lors de la réservation. Veuillez réessayer.",
+                icon: "error"
+              });
+            }
+          });
+        }
+      });
       hour.isBooked = true;
     }
   }

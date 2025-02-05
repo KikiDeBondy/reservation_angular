@@ -3,6 +3,8 @@ import {UserService} from "../../Services/user.service";
 import {User} from "../../models/User";
 import {CommonModule, DatePipe} from "@angular/common";
 import {ReservationService} from "../../Services/reservation.service";
+import {AuthentificationService} from "../../Services/auth/authentification.service";
+import {Reservation} from "../../models/Reservation";
 
 @Component({
   selector: 'app-account',
@@ -11,49 +13,32 @@ import {ReservationService} from "../../Services/reservation.service";
     CommonModule,
   ],
   templateUrl: './account.component.html',
+  standalone: true,
   styleUrl: './account.component.css'
 })
 export class AccountComponent {
 
-  private userService = inject(UserService);
-  private reservationService = inject(ReservationService);
+  protected readonly Date = Date;
+  private readonly auth = inject(AuthentificationService);
+  private readonly reservationService = inject(ReservationService);
 
-  user!: any;
-  reservations: any;
-  // Fausse donnée pour les réservations passées
-  pastReservations = [
-    { id: 1, date: '2024-12-15T14:00:00Z', service: 'Coupe de cheveux', status: 'completed' },
-    { id: 2, date: '2024-11-20T10:00:00Z', service: 'Coloration', status: 'completed' }
-  ];
+  user!: User | null;
+  reservations: Reservation[] = [];
 
-  // Fausse donnée pour les réservations à venir
-  upcomingReservations = [
-    { id: 3, date: '2025-02-10T12:00:00Z', service: 'Permanente', status: 'upcoming' },
-    { id: 4, date: '2025-03-05T09:00:00Z', service: 'Coiffure pour mariage', status: 'upcoming' }
-  ];
+  date = new Date();
+  dateUTC = new Date(Date.UTC(this.date.getUTCFullYear(), this.date.getUTCMonth(), this.date.getUTCDate(), this.date.getUTCHours(), this.date.getUTCMinutes()));
+
   ngOnInit() {
-    this.showUser(1);
-    this.showReservationByUser(1)
-  }
-
-  showUser(id: number){
-    this.userService.showUser(id).subscribe({
-      next: (res) => {
-        this.user = res;
-        this.user = this.user.user;
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
+    this.user = this.auth.getUserFromStorage();
+    if (this.user) {
+      this.showReservationByUser(this.user.id);
+    }
   }
 
   showReservationByUser(id: number){
     this.reservationService.showReservationByUser(id).subscribe({
       next: (res) => {
         this.reservations = res;
-        console.log(this.reservations);
-        // this.reservations = this.reservations.reservations;
       },
       error: (err) => {
         console.error(err);
@@ -61,5 +46,13 @@ export class AccountComponent {
     });
   }
 
-  protected readonly Date = Date;
+  statutColor(reservation: Reservation) {
+    // Comparer les deux dates (les deux sont en UTC)
+    return this.dateUTC > new Date(reservation.start) ?  'bg-red-100' : 'bg-green-100';
+  }
+  statut(reservation: Reservation) {
+    return this.dateUTC > new Date(reservation.start) ?  'Terminé' : 'A venir';
+  }
+
+
 }
