@@ -5,12 +5,15 @@ import {CommonModule, DatePipe} from "@angular/common";
 import {ReservationService} from "../../Services/reservation.service";
 import {AuthentificationService} from "../../Services/auth/authentification.service";
 import {Reservation} from "../../models/Reservation";
+import {Button} from "primeng/button";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-account',
   imports: [
     DatePipe,
     CommonModule,
+    Button,
   ],
   templateUrl: './account.component.html',
   standalone: true,
@@ -55,4 +58,20 @@ export class AccountComponent {
   }
 
 
+  deleteReservation(id: number | undefined) {
+
+    this.reservationService.deleteReservation(id, this.user?.id).subscribe({
+      next: (res) => {
+        this.reservations = this.reservations.filter((reservation) => reservation.id !== id);
+      },
+      error: (err) => {
+        console.error(err.message);
+        Swal.fire({
+          title: "Hop Hop Hop !",
+          text: "Impossible de supprimer cette réservation",
+          icon: "error"
+        });
+      }
+    });
+  }
 }

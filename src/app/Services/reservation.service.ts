@@ -22,4 +22,8 @@ export class ReservationService {
   weeklyReservation(date: string){
     return this.http.get<any>(`http://localhost:8000/reservation/weekly/${date}`);
   }
+
+  deleteReservation(id?: number , userId?: number){
+    return this.http.delete<any>(`http://localhost:8000/reservation/delete/${id}/${userId}`);
+  }
 }
