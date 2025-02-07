@@ -49,4 +49,12 @@ export class AuthentificationService {
     return this.http.post<any>('http://localhost:8000/register', user);
   }
 
+  isAuthenticated(): boolean {
+    return !!this.currentUserSubject.value;
+  }
+
+  isAdmin(): boolean {
+    return !!this.currentUserSubject.value?.roles?.includes('ROLE_ADMIN');
+  }
+
 }
