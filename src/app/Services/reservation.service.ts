@@ -26,4 +26,7 @@ export class ReservationService {
   deleteReservation(id?: number , userId?: number){
     return this.http.delete<any>(`http://localhost:8000/reservation/delete/${id}/${userId}`);
   }
+  reservation(){
+    return this.http.get<any>(`http://localhost:8000/reservation`);
+  }
 }
