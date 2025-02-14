@@ -20,10 +20,11 @@ export class AuthentificationService {
   constructor() {}
 
   // Fonction pour récupérer l'utilisateur depuis le sessionStorage (si existant)
-  public getUserFromStorage(): User | null {
+  public getUserFromStorage(): User {
     const user = sessionStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
+
 
   // Méthode d'authentification avec email et mot de passe
   authentification(login: Login) {

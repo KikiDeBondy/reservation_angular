@@ -7,6 +7,7 @@ import {ReservationComponent} from "./Pages/reservation/reservation.component";
 import {authGuard} from "./core/Guard/auth/auth.guard";
 import {adminGuard} from "./core/Guard/admin/admin.guard";
 import {ScheduleComponent} from "./Pages/admin/schedule/schedule.component";
+import {SettingsComponent} from "./Pages/admin/settings/settings.component";
 
 export const routes: Routes = [
   {path: '', component: HomeComponent, title: 'Page d\'accueil'},
@@ -15,4 +16,5 @@ export const routes: Routes = [
   {path: 'account', component: AccountComponent, title: 'Compte', canActivate: [authGuard]},
   {path: 'reservation', component: ReservationComponent, title: 'Réservation', canActivate: [authGuard]},
   {path: 'schedule', component: ScheduleComponent, title: 'Planning'},
+  {path: 'settings', component: SettingsComponent, title: 'Paramètre'},
 ];

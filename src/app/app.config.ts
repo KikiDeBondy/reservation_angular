@@ -7,9 +7,14 @@ import {provideHttpClient, withFetch, withInterceptors} from "@angular/common/ht
 import {JwtInterceptor} from "./core/interceptor/JwtInterceptor";
 import {providePrimeNG} from "primeng/config";
 import Aura from '@primeng/themes/aura'
+import {DatePipe} from "@angular/common";
+import {MAT_DIALOG_DEFAULT_OPTIONS} from "@angular/material/dialog";
+import {provideNativeDateAdapter} from "@angular/material/core";
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideAnimationsAsync(),
+  providers: [
+    provideRouter(routes),
+    provideAnimationsAsync(),
     provideHttpClient(
       withFetch(),
       withInterceptors([JwtInterceptor]),
@@ -18,5 +23,8 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: Aura
       }
-    })]
+    }),
+    DatePipe,
+    provideNativeDateAdapter()
+  ]
 };
