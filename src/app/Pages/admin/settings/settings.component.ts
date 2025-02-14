@@ -91,6 +91,7 @@ export class SettingsComponent {
     this.dialog.open(DatePickerComponent, {
       height : '400px',
       width : '800px',
+      data: { name: 'addSlot' }
     }).afterClosed().subscribe({
       next: (res) => {
         if(res){
@@ -117,6 +118,7 @@ export class SettingsComponent {
     this.dialog.open(DatePickerComponent, {
       height : '400px',
       width : '800px',
+      data: { name: 'absent' }
     }).afterClosed().subscribe({
       next: (res) => {
         if(res){

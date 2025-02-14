@@ -1,8 +1,17 @@
-<h2 mat-dialog-title class="text-2xl font-bold mb-4 text-center">Ajouter des nouveaux créneaux </h2>
-<span class="text-gray-700 text-sm mb-4 text-center block">
-  Entrez la date de début et la date de fin des créneaux que vous voulez créer <br>
-  PS : Les horaires créés sont de 9 à 17 heures
-</span>
+@if(data.name =='addSlot'){
+
+  <h2 mat-dialog-title class="text-2xl font-bold mb-4 text-center">Ajouter des nouveaux créneaux  </h2>
+  <span class="text-gray-700 text-sm mb-4 text-center block">
+      Entrez la date de début et la date de fin des créneaux que vous voulez créer <br>
+      PS : Les horaires créés sont de 9 à 17 heures
+  </span>
+} @else {
+  <h2 mat-dialog-title class="text-2xl font-bold mb-4 text-center">Absence</h2>
+  <span class="text-gray-700 text-sm mb-4 text-center block">
+      Entrez la date de début et la date de fin de votre absence<br>
+      PS : Cela va automatiquement bloquer les créneaux pour les clients
+  </span>
+}
 
 <mat-dialog-content class="p-4 bg-white rounded-lg shadow-lg">
   <mat-form-field class="w-full">
