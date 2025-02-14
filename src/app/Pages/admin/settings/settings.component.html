@@ -1,34 +1,3 @@
-<!--<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">-->
-<!--  <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">-->
-<!--    Horaires de Réservation-->
-<!--  </h2>-->
-
-<!--  <mat-accordion multi class="space-y-2">-->
-<!--    @for (day of getGroupedSlotsEntries(); track $index){-->
-<!--      <mat-expansion-panel>-->
-<!--        <mat-expansion-panel-header>-->
-<!--          <mat-panel-title class="text-lg font-medium text-gray-700">-->
-<!--            {{ day[0] | date: 'dd/MM/yyyy' }}-->
-<!--          </mat-panel-title>-->
-<!--        </mat-expansion-panel-header>-->
-<!--        <div class="grid grid-cols-3 gap-2 p-3">-->
-<!--          <button-->
-<!--            *ngFor="let slot of day[1]"-->
-<!--            [ngClass]="{-->
-<!--              'bg-red-500 hover:bg-red-600': slot.slot.is_reserved,-->
-<!--              'bg-green-500 hover:bg-green-600': !slot.slot.is_reserved-->
-<!--            }"-->
-<!--            class="p-1 w-full text-white text-xs font-medium rounded-lg shadow-sm transition-all hover:scale-105 focus:outline-none flex flex-col items-center"-->
-<!--            (click)="toggleReservation(slot.slot)"-->
-<!--          >-->
-<!--            <span class="text-sm font-semibold">{{ slot.date | date: 'HH:mm' }}</span>-->
-<!--            <span class="text-xs text-gray-200">{{ slot.date | date: 'HH:mm' }}</span>-->
-<!--          </button>-->
-<!--        </div>-->
-<!--      </mat-expansion-panel>-->
-<!--    }-->
-<!--  </mat-accordion>-->
-<!--</div>-->
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
   <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">
     Horaires de Réservation

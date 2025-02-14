@@ -1,16 +1,12 @@
-import {Component, inject} from '@angular/core';
+import {Component, Inject, inject} from '@angular/core';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {DatePipe, NgIf} from "@angular/common";
 import {MatButton} from "@angular/material/button";
 import {Button} from "primeng/button";
-import {SlotService} from "../../../Services/slot.service";
-import {AuthentificationService} from "../../../Services/auth/authentification.service";
-import {User} from "../../../models/User";
-import {AlertComponent} from "@coreui/angular";
 import {AlertService} from "../../../Services/alert/alert.service";
 
 @Component({
@@ -25,9 +21,8 @@ export class DatePickerComponent {
 
   constructor(
     private dialogRef: MatDialogRef<DatePickerComponent>,
+    @Inject(MAT_DIALOG_DATA) public data : {name : string}
   ) {}
-
-
 
   readonly range = new FormGroup({
     start: new FormControl<Date | null>(null),

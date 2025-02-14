@@ -18,6 +18,7 @@ export class HeaderComponent {
 
   currentUser: User | null = null;
   protected isHomePage: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(private authService: AuthentificationService, private router: Router) {
     this.router.events.subscribe(() => {
@@ -30,6 +31,7 @@ export class HeaderComponent {
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
     });
+    this.isAdmin = this.authService.isAdmin();
   }
 
   logout() {

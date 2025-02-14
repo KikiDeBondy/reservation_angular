@@ -26,7 +26,6 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
-              "node_modules/@coreui/coreui/dist/css/coreui.css",
               "src/styles.css",
               "./node_modules/@syncfusion/ej2-material-theme/styles/material.css"
             ],

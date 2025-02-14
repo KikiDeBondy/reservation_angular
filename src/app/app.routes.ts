@@ -15,6 +15,6 @@ export const routes: Routes = [
   {path: 'register', component: RegisterComponent, title: 'Inscription'},
   {path: 'account', component: AccountComponent, title: 'Compte', canActivate: [authGuard]},
   {path: 'reservation', component: ReservationComponent, title: 'Réservation', canActivate: [authGuard]},
-  {path: 'schedule', component: ScheduleComponent, title: 'Planning'},
-  {path: 'settings', component: SettingsComponent, title: 'Paramètre'},
+  {path: 'schedule', component: ScheduleComponent, title: 'Planning', canActivate: [adminGuard]},
+  {path: 'settings', component: SettingsComponent, title: 'Paramètre', canActivate: [adminGuard]},
 ];
