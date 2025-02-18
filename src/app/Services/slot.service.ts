@@ -15,11 +15,11 @@ export class SlotService {
     return this.http.post<Array<String>>('http://localhost:8000/slot/generate', data);
   }
 
-  availibilitiesOfBarber(id: number){
-    return this.http.get<Slot>(`http://localhost:8000/slot/weekly/unreserved/${id}`)
+  availibilitiesOfBarber(id: number, page: number){
+    return this.http.get<Slot>(`http://localhost:8000/slot/weekly/unreserved/${id}/${page}`);
   }
-  planningOfBarber(id: number){
-    return this.http.get<Slot>(`http://localhost:8000/slot/weekly/${id}`)
+  planningOfBarber(id: number, page: number){
+    return this.http.get<Slot>(`http://localhost:8000/slot/weekly/${id}/${page}`);
   }
 
   slotUpdate(id: number, reserved: boolean){

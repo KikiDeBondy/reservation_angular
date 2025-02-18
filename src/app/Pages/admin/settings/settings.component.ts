@@ -34,18 +34,22 @@ export class SettingsComponent {
 
   currentUser!: User;
   groupedSlots: { [key: string]: { date: Date, slot: Slot }[] } = {};
+  currentPage: number = 0;
+  pageSize: number = 7;
+  hasMorePages: boolean = true;
 
 
   ngOnInit() {
     this.currentUser = this.auth.getUserFromStorage()
-    this.getSlotsOfBarber(this.currentUser.id)
+    this.getSlotsOfBarber(this.currentUser.id, this.currentPage)
   }
 
-  getSlotsOfBarber(id: number){
-    this.slotService.planningOfBarber(id).subscribe({
+  getSlotsOfBarber(id: number, currentPage: number){
+    this.slotService.planningOfBarber(id, currentPage).subscribe({
       next: (data) => {
-        if(Array.isArray(data))
+        if(Array.isArray(data)){
           this.groupSlotByDate(data)
+        }
         console.log(this.getGroupedSlotsEntries());
       },
       error: err => {}
@@ -80,6 +84,9 @@ export class SettingsComponent {
       // On ajoute un objet contenant l'heure et l'ID du slot
       this.groupedSlots[dateKey].push({ date: start, slot: slot });
     });
+    this.hasMorePages = Object.keys(this.groupedSlots).length === this.pageSize;
+    console.log('aaa',Object.keys(this.groupedSlots).length, this.hasMorePages)
+
   }
 
   // Pour itérer dans le template, tu peux extraire les entrées de groupedSlots
@@ -129,7 +136,7 @@ export class SettingsComponent {
           }
           this.slotService.absenceOfBarber(this.currentUser.id,data).subscribe({
             next: () => {
-              this.getSlotsOfBarber(this.currentUser.id)
+              this.getSlotsOfBarber(this.currentUser.id, this.currentPage)
               this.alert.successAlert('Succès !', 'Votre absence à bien été prise en compte');
             },
             error: error => {
@@ -140,5 +147,15 @@ export class SettingsComponent {
         }
       }
     })
+  }
+
+  previousPage() {
+    this.currentPage--
+    this.getSlotsOfBarber(this.currentUser.id, this.currentPage);
+  }
+
+  nextPage() {
+    this.currentPage++
+    this.getSlotsOfBarber(this.currentUser.id, this.currentPage)
   }
 }

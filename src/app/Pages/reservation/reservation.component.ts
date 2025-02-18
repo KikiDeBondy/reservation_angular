@@ -25,9 +25,11 @@ export class ReservationComponent {
   private datePipe = inject(DatePipe);
   private alert = inject(AlertService);
   private currentUser!: User;
+  currentPage: number = 0;
+  hasMorePages: boolean= true;
 
   ngOnInit() {
-    this.getAvailibilitiesOfBarber(1)
+    this.getAvailibilitiesOfBarber(1,0)
     this.currentUser = this.auth.getUserFromStorage();
   }
 
@@ -97,9 +99,10 @@ export class ReservationComponent {
   private slotsService = inject(SlotService);
   protected slots : Slot[] = [];
 
-  getAvailibilitiesOfBarber(id: number) {
-    this.slotsService.availibilitiesOfBarber(id).subscribe({
+  getAvailibilitiesOfBarber(id: number, page: number) {
+    this.slotsService.availibilitiesOfBarber(id, page).subscribe({
       next: (data) => {
+        console.log(data)
         if (Array.isArray(data))
           this.slots = data;
         this.groupSlotByDate()
@@ -113,6 +116,7 @@ export class ReservationComponent {
   groupedSlots: { [key: string]: { date: Date, slot: Slot }[] } = {};
 
   groupSlotByDate() {
+    this.groupedSlots = {}
     this.slots.forEach(slot => {
       const date = new Date(slot.date);
       const start = new Date(slot.start);
@@ -134,6 +138,15 @@ export class ReservationComponent {
   // Pour itérer dans le template, tu peux extraire les entrées de groupedSlots
   getGroupedSlotsEntries() {
     return Object.entries(this.groupedSlots);  // Retourne un tableau de [date, slots]
+  }
+
+  previousPage(){
+    this.currentPage--
+    this.getAvailibilitiesOfBarber(1,this.currentPage)
+  }
+  nextPage(){
+    this.currentPage++;
+    this.getAvailibilitiesOfBarber(1,this.currentPage)
   }
 
 }

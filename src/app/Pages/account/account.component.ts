@@ -7,6 +7,7 @@ import {AuthentificationService} from "../../Services/auth/authentification.serv
 import {Reservation} from "../../models/Reservation";
 import {Button} from "primeng/button";
 import Swal from "sweetalert2";
+import {SlotService} from "../../Services/slot.service";
 
 @Component({
   selector: 'app-account',
