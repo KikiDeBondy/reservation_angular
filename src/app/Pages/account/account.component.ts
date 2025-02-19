@@ -8,6 +8,8 @@ import {Reservation} from "../../models/Reservation";
 import {Button} from "primeng/button";
 import Swal from "sweetalert2";
 import {SlotService} from "../../Services/slot.service";
+import {Slot} from "../../models/Slot";
+import {AlertService} from "../../Services/alert/alert.service";
 
 @Component({
   selector: 'app-account',
@@ -25,6 +27,8 @@ export class AccountComponent {
   protected readonly Date = Date;
   private readonly auth = inject(AuthentificationService);
   private readonly reservationService = inject(ReservationService);
+  private readonly slotService = inject(SlotService);
+  private readonly alertsService = inject(AlertService);
 
   user!: User | null;
   reservations: Reservation[] = [];
@@ -43,6 +47,7 @@ export class AccountComponent {
     this.reservationService.showReservationByUser(id).subscribe({
       next: (res) => {
         this.reservations = res;
+        console.log(res);
       },
       error: (err) => {
         console.error(err);
@@ -59,19 +64,21 @@ export class AccountComponent {
   }
 
 
-  deleteReservation(id: number | undefined) {
-
+  deleteReservation(id: number | undefined, slot_id: number) {
     this.reservationService.deleteReservation(id, this.user?.id).subscribe({
-      next: (res) => {
-        this.reservations = this.reservations.filter((reservation) => reservation.id !== id);
+      next: () => {
+        this.slotService.slotUpdate(slot_id, true).subscribe({//TODO: true à changer par slot.is_reserved (normalement tjrs true)
+            next: ()=>{
+              this.reservations = this.reservations.filter((reservation) => reservation.id !== id);
+            },
+          error: (err) => {
+             this.alertsService.errorAlert(`${err.message}`, err.statusText)
+          }
+        })
       },
       error: (err) => {
         console.error(err.message);
-        Swal.fire({
-          title: "Hop Hop Hop !",
-          text: "Impossible de supprimer cette réservation",
-          icon: "error"
-        });
+        this.alertsService.errorAlert(`${err.message}`, err.statusText);
       }
     });
   }

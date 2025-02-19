@@ -3,6 +3,7 @@ import {Router, RouterLink} from "@angular/router";
 import {User} from "../../models/User";
 import {AuthentificationService} from "../../Services/auth/authentification.service";
 import {CommonModule, NgClass} from "@angular/common";
+import {firstValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-header',
@@ -26,15 +27,19 @@ export class HeaderComponent {
     });
   }
 
-  ngOnInit(): void {
-    // S'abonner à l'état de l'utilisateur
+  ngOnInit() {
+    this.login();
+  }
+
+  login() {
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
+      this.isAdmin = this.authService.isAdmin();
     });
-    this.isAdmin = this.authService.isAdmin();
   }
 
   logout() {
+    this.isAdmin = false;
     this.authService.logout();
   }
 }

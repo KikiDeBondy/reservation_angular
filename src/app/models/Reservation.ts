@@ -5,6 +5,8 @@ export type Reservation= {
     end: string;
     client_id: number;
     barber_id: number;
+    slot_id: number;
     client?: any;
     barber?: any;
+    slot?: any;
 }

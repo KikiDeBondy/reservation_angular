@@ -29,7 +29,7 @@ export class ReservationComponent {
   hasMorePages: boolean= true;
 
   ngOnInit() {
-    this.getAvailibilitiesOfBarber(1,0)
+    this.getAvailibilitiesOfBarber(2,0)
     this.currentUser = this.auth.getUserFromStorage();
   }
 
@@ -47,7 +47,8 @@ export class ReservationComponent {
             start: start,
             end: end,
             client_id: this.currentUser.id,
-            barber_id: 2
+            barber_id: 2,
+            slot_id: slot.id
           }
 
           //TODO: Déprécier, check une autre méthode (si une erreur, annuler les deux)
@@ -142,11 +143,11 @@ export class ReservationComponent {
 
   previousPage(){
     this.currentPage--
-    this.getAvailibilitiesOfBarber(1,this.currentPage)
+    this.getAvailibilitiesOfBarber(2,this.currentPage)
   }
   nextPage(){
     this.currentPage++;
-    this.getAvailibilitiesOfBarber(1,this.currentPage)
+    this.getAvailibilitiesOfBarber(2,this.currentPage)
   }
 
 }
