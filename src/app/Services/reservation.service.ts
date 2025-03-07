@@ -30,4 +30,7 @@ export class ReservationService {
   reservation(){
     return this.http.get<any>(apiUrl+`/reservation`);
   }
+  nextReservation(id: number){
+    return this.http.get<any>(apiUrl+`/reservation/next/${id}`);
+  }
 }
