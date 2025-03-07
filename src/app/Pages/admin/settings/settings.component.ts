@@ -11,6 +11,7 @@ import {DatePickerComponent} from "../../../partials/dialog/date-picker/date-pic
 import {AuthentificationService} from "../../../Services/auth/authentification.service";
 import {AlertService} from "../../../Services/alert/alert.service";
 import {User} from "../../../models/User";
+import {LoaderComponent} from "../../../loader.component";
 
 
 @Component({
@@ -21,6 +22,7 @@ import {User} from "../../../models/User";
     CommonModule,
     MatAccordion,
     MatExpansionModule,
+    LoaderComponent,
   ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css'
@@ -37,9 +39,11 @@ export class SettingsComponent {
   currentPage: number = 0;
   pageSize: number = 7;
   hasMorePages: boolean = true;
+  loader = false;
 
 
   ngOnInit() {
+    this.loader = true;
     this.currentUser = this.auth.getUserFromStorage()
     this.getSlotsOfBarber(this.currentUser.id, this.currentPage)
   }
@@ -52,7 +56,9 @@ export class SettingsComponent {
         }
         console.log(this.getGroupedSlotsEntries());
       },
-      error: err => {}
+      error: err => {
+        this.loader = false;
+      }
     })
   }
   toggleReservation(slot: Slot) {
@@ -85,8 +91,7 @@ export class SettingsComponent {
       this.groupedSlots[dateKey].push({ date: start, slot: slot });
     });
     this.hasMorePages = Object.keys(this.groupedSlots).length === this.pageSize;
-    console.log('aaa',Object.keys(this.groupedSlots).length, this.hasMorePages)
-
+    this.loader = false
   }
 
   // Pour itérer dans le template, tu peux extraire les entrées de groupedSlots
@@ -102,6 +107,7 @@ export class SettingsComponent {
     }).afterClosed().subscribe({
       next: (res) => {
         if(res){
+          this.loader = true;
           const data = {
             barber_id: this.currentUser.id,
             start_date: res.start,
@@ -109,10 +115,12 @@ export class SettingsComponent {
           }
           this.slotService.generateSlot(data).subscribe({
             next: () => {
+              this.loader = false;
               this.alert.successAlert('Succès !', 'Vous venez d\'enregistrer vos nouveaux créneaux.');
             },
             error: error => {
               console.log(error)
+              this.loader = false
               this.alert.errorAlert('Erreur génération de créneaux', error.error.message)
             }
           })

@@ -40,7 +40,6 @@ export class DatePickerComponent {
       this.dialogRef.close(dates);
     } else {
       this.alert.errorAlert('Dates invalides ou incohérentes', 'Veuillez saisir les dates, et dans le bon ordre')
-
     }
   }
 

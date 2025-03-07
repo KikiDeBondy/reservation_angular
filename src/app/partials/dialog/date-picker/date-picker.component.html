@@ -15,11 +15,12 @@
 
 <mat-dialog-content class="p-4 bg-white rounded-lg shadow-lg">
   <mat-form-field class="w-full">
-    <mat-label class="text-lg font-semibold">Enter a date range</mat-label>
-    <mat-date-range-input [formGroup]="range" [rangePicker]="picker" class="mt-2 w-full">
-      <input matStartDate formControlName="start" placeholder="Start" class="p-10"/>
-      <input matEndDate formControlName="end" placeholder="End" class="p-2 "/>
+    <mat-label class="text-lg font-semibold">Entrer vos dates</mat-label>
+    <mat-date-range-input [formGroup]="range" [rangePicker]="picker"  class="mt-2 w-full">
+      <input matStartDate formControlName="start" placeholder="Début" class="p-10"/>
+      <input matEndDate formControlName="end" placeholder="Fin" class="p-2 "/>
     </mat-date-range-input>
+
 
     <mat-hint class="text-sm text-gray-500">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker" class="mt-2"/>

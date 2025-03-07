@@ -2,12 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import {CommonModule} from "@angular/common";
 import {RouterLink} from "@angular/router";
+import {LoaderComponent} from "../../loader.component";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, LoaderComponent],
   standalone: true,
   animations: [
     //Animations des images de droite à gauche
