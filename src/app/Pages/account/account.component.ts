@@ -10,14 +10,16 @@ import Swal from "sweetalert2";
 import {SlotService} from "../../Services/slot.service";
 import {Slot} from "../../models/Slot";
 import {AlertService} from "../../Services/alert/alert.service";
+import {LoaderComponent} from "../../loader.component";
 
 @Component({
   selector: 'app-account',
-  imports: [
-    DatePipe,
-    CommonModule,
-    Button,
-  ],
+    imports: [
+        DatePipe,
+        CommonModule,
+        Button,
+        LoaderComponent,
+    ],
   templateUrl: './account.component.html',
   standalone: true,
   styleUrl: './account.component.css'
@@ -32,6 +34,7 @@ export class AccountComponent {
 
   user!: User | null;
   reservations: Reservation[] = [];
+  loader = false;
 
   date = new Date();
   dateUTC = new Date(Date.UTC(this.date.getUTCFullYear(), this.date.getUTCMonth(), this.date.getUTCDate(), this.date.getUTCHours(), this.date.getUTCMinutes()));
@@ -44,12 +47,15 @@ export class AccountComponent {
   }
 
   showReservationByUser(id: number){
+    this.loader = true;
     this.reservationService.showReservationByUser(id).subscribe({
       next: (res) => {
+        this.loader = false;
         this.reservations = res;
         console.log(res);
       },
       error: (err) => {
+        this.loader = false;
         console.error(err);
       }
     });

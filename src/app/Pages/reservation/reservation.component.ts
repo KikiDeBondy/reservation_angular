@@ -9,11 +9,13 @@ import {Slot} from "../../models/Slot";
 import {AlertService} from "../../Services/alert/alert.service";
 import {forkJoin} from "rxjs";
 import { catchError } from 'rxjs/operators';
+import {LoaderComponent} from "../../loader.component";
 
 @Component({
   selector: 'app-reservation',
   imports: [
     CommonModule,
+    LoaderComponent,
   ],
   templateUrl: './reservation.component.html',
   standalone: true,
@@ -27,6 +29,7 @@ export class ReservationComponent {
   private currentUser!: User;
   currentPage: number = 0;
   hasMorePages: boolean= true;
+  loader = false;
 
   ngOnInit() {
     this.getAvailibilitiesOfBarber(2,0)
@@ -101,6 +104,7 @@ export class ReservationComponent {
   protected slots : Slot[] = [];
 
   getAvailibilitiesOfBarber(id: number, page: number) {
+    this.loader = true;
     this.slotsService.availibilitiesOfBarber(id, page).subscribe({
       next: (data) => {
         console.log(data)
@@ -133,6 +137,7 @@ export class ReservationComponent {
 
       // On ajoute un objet contenant l'heure et l'ID du slot
       this.groupedSlots[dateKey].push({ date: start, slot: slot });
+      this.loader = false;
     });
   }
 

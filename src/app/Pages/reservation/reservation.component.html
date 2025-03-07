@@ -1,29 +1,4 @@
-<!--<div class="bg-gray-100 min-h-screen flex justify-center items-center py-8">-->
-<!--  <div class="card p-8 max-w-[90%] bg-white rounded-xl shadow-xl">-->
-<!--    &lt;!&ndash; Affichage des jours dans une grille horizontale avec espacement entre les éléments &ndash;&gt;-->
-<!--    <div class="grid grid-cols-7 gap-4 mb-6">-->
-<!--      &lt;!&ndash; Boucle pour afficher les dates &ndash;&gt;-->
-<!--      <div *ngFor="let slot of getGroupedSlotsEntries(); let i = index" class="text-center flex flex-col items-center justify-between">-->
-<!--        <div class="font-semibold text-lg text-gray-800 mb-2">-->
-<!--          {{ slot[0] | date: 'EEE dd/MM' : 'fr' }}-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Affichage des horaires avec un espacement entre les boutons horizontalement &ndash;&gt;-->
-<!--        <div class="flex flex-wrap justify-around gap-3 w-full">-->
-<!--          <div *ngFor="let start of slot[1]; let j = index" class="w-auto">-->
-<!--            <button-->
-<!--              (click)="bookSlot(slot[0], start.date, start.slot)"-->
-<!--              class="py-3 px-6 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ease-in-out duration-150"-->
-<!--            >-->
-<!--              {{ start.date | date: 'HH:mm' : 'fr' }}-->
-<!--            </button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
+<app-loader [loading]="loader"></app-loader>
 <div class="bg-gray-100 min-h-screen flex justify-center items-center py-8">
   <div class="p-6 max-w-4xl w-full bg-white rounded-xl shadow-xl">
     <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Réserver un créneau</h2>
