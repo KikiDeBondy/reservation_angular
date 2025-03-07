@@ -16,3 +16,4 @@ COPY --from=build /app/dist/reservation/browser /usr/share/nginx/html
 EXPOSE 80
 # Copier la configuration Nginx dans le conteneur
 COPY nginx.conf /etc/nginx/nginx.conf
+
