@@ -1,45 +1,26 @@
-<!--<div class="bg-gray-100 min-h-screen flex justify-center items-center py-8">-->
-<!--  <div class="card p-8 max-w-[90%] bg-white rounded-xl shadow-xl">-->
-<!--    &lt;!&ndash; Affichage des jours dans une grille horizontale avec espacement entre les éléments &ndash;&gt;-->
-<!--    <div class="grid grid-cols-7 gap-4 mb-6">-->
-<!--      &lt;!&ndash; Boucle pour afficher les dates &ndash;&gt;-->
-<!--      <div *ngFor="let slot of getGroupedSlotsEntries(); let i = index" class="text-center flex flex-col items-center justify-between">-->
-<!--        <div class="font-semibold text-lg text-gray-800 mb-2">-->
-<!--          {{ slot[0] | date: 'EEE dd/MM' : 'fr' }}-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Affichage des horaires avec un espacement entre les boutons horizontalement &ndash;&gt;-->
-<!--        <div class="flex flex-wrap justify-around gap-3 w-full">-->
-<!--          <div *ngFor="let start of slot[1]; let j = index" class="w-auto">-->
-<!--            <button-->
-<!--              (click)="bookSlot(slot[0], start.date, start.slot)"-->
-<!--              class="py-3 px-6 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ease-in-out duration-150"-->
-<!--            >-->
-<!--              {{ start.date | date: 'HH:mm' : 'fr' }}-->
-<!--            </button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
+<app-loader [loading]="loader"></app-loader>
 <div class="bg-gray-100 min-h-screen flex justify-center items-center py-8">
-  <div class="p-6 max-w-4xl w-full bg-white rounded-xl shadow-xl">
-    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Réserver un créneau</h2>
+  <div class="p-6 max-w-6xl w-full bg-white rounded-xl shadow-xl">
+    <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Réserver un créneau</h2>
 
     <div class="overflow-x-auto">
-      <div class="grid grid-cols-7 gap-4 mb-6 text-center">
-        <div *ngFor="let slot of getGroupedSlotsEntries(); let i = index" class="flex flex-col items-center">
-          <div class="font-semibold text-base text-gray-800 py-2 px-3 bg-gray-200 rounded-lg w-full text-center">
-            {{ slot[0] | date: 'EEE dd/MM' : 'fr' }}
+      <div class="grid grid-cols-7 gap-2 text-center">
+        <div *ngFor="let slotGroup of getGroupedSlotsEntries(); let i = index" class="flex flex-col items-center w-full">
+          <!-- Jour de la semaine -->
+          <div class="font-bold text-lg text-white bg-gray-800 py-3 w-full rounded-t-lg shadow-md">
+            {{ slotGroup[0] | date: 'EEEE' }}
+          </div>
+          <!-- Date -->
+          <div class="text-sm text-gray-900 bg-gray-300 py-2 w-full">
+            {{ slotGroup[0] | date: 'dd/MM' }}
           </div>
 
-          <div class="grid grid-cols-2 gap-1 mt-2">
-            <button *ngFor="let start of slot[1]"
-                    (click)="bookSlot(slot[0], start.date, start.slot)"
-                    class="py-2 px-3 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600 transition-all focus:outline-none focus:ring-2 focus:ring-green-400 text-sm">
-              {{ start.date | date: 'HH:mm' : 'fr' }}
+          <!-- Créneaux horaires -->
+          <div class="flex flex-col gap-2 bg-gray-100 py-3 w-full rounded-b-lg shadow-sm">
+            <button *ngFor="let slot of slotGroup[1]"
+                    (click)="bookSlot(slotGroup[0], slot.start, slot)"
+                    class="py-2 px-4 w-5/6 mx-auto bg-gray-200 text-gray-900 rounded-md shadow-md hover:bg-gray-400 transition-all focus:outline-none focus:ring-2 focus:ring-gray-600 text-sm">
+              {{ slot.start | date : 'HH:mm' : 'utc' }}
             </button>
           </div>
         </div>
@@ -49,16 +30,16 @@
     <!-- Pagination -->
     <div class="flex justify-between items-center mt-6">
       <button
-        class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded-lg shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         (click)="previousPage()"
         [disabled]="currentPage === 0">
         ⬅️ Précédent
       </button>
 
-      <span class="text-gray-700 font-medium">Page {{ currentPage+1 }}</span>
+      <span class="text-gray-900 font-medium">Page {{ currentPage+1 }}</span>
 
       <button
-        class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded-lg shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         (click)="nextPage()"
         [disabled]="!hasMorePages">
         Suivant ➡️

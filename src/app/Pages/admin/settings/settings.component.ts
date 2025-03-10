@@ -115,7 +115,7 @@ export class SettingsComponent {
           }
           this.slotService.generateSlot(data).subscribe({
             next: () => {
-              this.loader = false;
+              this.getSlotsOfBarber(this.currentUser.id, this.currentPage)
               this.alert.successAlert('Succès !', 'Vous venez d\'enregistrer vos nouveaux créneaux.');
             },
             error: error => {
@@ -137,6 +137,7 @@ export class SettingsComponent {
     }).afterClosed().subscribe({
       next: (res) => {
         if(res){
+          this.loader = true;
           const data = {
             barber_id: this.currentUser.id,
             start_date: res.start,
@@ -149,6 +150,7 @@ export class SettingsComponent {
             },
             error: error => {
               console.log(error)
+              this.loader = false;
               this.alert.errorAlert('Erreur génération de créneaux', error.error.message)
             }
           })
