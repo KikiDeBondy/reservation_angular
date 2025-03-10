@@ -17,7 +17,7 @@ export class SlotService {
   }
 
   availibilitiesOfBarber(id: number, page: number){
-    return this.http.get<Slot>(apiUrl+`/slot/weekly/unreserved/${id}/${page}`);
+    return this.http.get<any>(apiUrl+`/slot/weekly/unreserved/${id}/${page}`);
   }
   planningOfBarber(id: number, page: number){
     return this.http.get<Slot>(apiUrl+`/slot/weekly/${id}/${page}`);

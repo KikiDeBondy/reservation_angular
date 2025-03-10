@@ -13,7 +13,7 @@
                class="absolute bottom-4 left-4 z-50 w-auto max-w-xs"
     >
       <p>N'oubliez pas votre prochaine réservation le {{nextReservation.start| date: 'dd/MM'}}
-        à {{nextReservation.start| date: 'HH:mm'}}
+        à {{nextReservation.start| date: 'HH:mm' : 'UTC'}}
         avec {{nextReservation.barber.name}} {{nextReservation.barber.forename}}</p>
     </p-message>
   }
